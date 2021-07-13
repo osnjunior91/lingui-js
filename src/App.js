@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
-import './App.css';
+import './App.css'
 import Home from './Home'
 import { messages } from './locales/pt-br/messages.js'
 
@@ -11,7 +11,7 @@ import { messages } from './locales/pt-br/messages.js'
 i18n.load('pt-br', messages)
 i18n.activate('pt-br')
 
-function App() {
+const App = () => {
   
   const [language, setLanguage] = useState('pt-br');
 
@@ -35,4 +35,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
