@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:{"Olá… Eu quero jogar um jogo...":"Olá… Eu quero jogar um jogo..."}};
