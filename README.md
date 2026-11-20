@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# React Internationalization with LinguiJS 🌍
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A small **React internationalization (i18n) proof of concept** demonstrating how to switch languages at runtime using **LinguiJS**, React Hooks, and Material-UI.
 
-## Available Scripts
+The application starts in **Brazilian Portuguese** and lets users switch between **English, Spanish, and Portuguese** without reloading the page. Translation catalogs are loaded dynamically when a language is selected.
 
-In the project directory, you can run:
+> **Project scope:** An educational React demo focused on internationalization and localization—not a production-ready translation platform.
 
-### `yarn start`
+## ✨ Highlights
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Multilingual React UI:** Brazilian Portuguese (`pt-br`), English (`en`), and Spanish (`es`).
+- **Runtime language switching:** Change the active locale directly from a Material-UI dropdown.
+- **Lazy-loaded translation catalogs:** Uses dynamic `import()` to load locale messages when needed.
+- **LinguiJS integration:** `@lingui/react` with `I18nProvider`, `@lingui/core` for locale management, and `@lingui/macro` for translatable text.
+- **Component-based organization:** The root `App` manages locale state while `Home` renders the language selector and translated content.
+- **Translation workflow:** Scripts are configured for message extraction and compilation with Lingui CLI.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🛠️ Tech Stack
 
-### `yarn test`
+| Technology | Role |
+| --- | --- |
+| React 17 | UI components and state management |
+| JavaScript (ES6+) | Application logic, async functions, dynamic imports |
+| LinguiJS 3.10 | i18n, locale catalogs, translation messages |
+| Material-UI 4 | Dropdown, layout, and styling |
+| Create React App / react-scripts 4 | Development, build, and test tooling |
+| Babel macros | Processing `<Trans>` translation macros |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🔄 How It Works
 
-### `yarn build`
+1. `src/App.js` loads the Brazilian Portuguese catalog and activates `pt-br` as the default language.
+2. `App` stores the selected locale using `useState` and provides the Lingui `i18n` instance through `I18nProvider`.
+3. `src/Home.js` displays a Material-UI `Select` with Portuguese, English, and Spanish options.
+4. When the selection changes, `handleLanguageChange` dynamically imports the matching messages module, then invokes `i18n.load()` and `i18n.activate()`.
+5. The content marked with Lingui's `<Trans>` macro is rendered in the active language.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```text
+Language dropdown (Home)
+        |
+        v
+onLanguageChange(locale)
+        |
+        v
+React state + dynamic import
+        |
+        v
+Lingui i18n.load(locale, messages)
+        |
+        v
+Lingui i18n.activate(locale)
+        |
+        v
+I18nProvider -> translated UI
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Example from the application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The demo's translated heading changes according to the selected language:
 
-### `yarn eject`
+| Locale | Displayed heading |
+| --- | --- |
+| Portuguese (`pt-br`) | Olá… Eu quero jogar um jogo... |
+| English (`en`) | Hello… I Want to play a game... |
+| Spanish (`es`) | Hola… quiero jugar un juego... |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The screen also embeds an external Giphy animation as a visual element.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📁 Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```text
+lingui-js/
+├── .babelrc                       # Babel macro plugin
+├── .linguirc                       # Locales and catalog paths
+├── package.json                    # React, LinguiJS, Material-UI, scripts
+├── public/
+└── src/
+    ├── App.js                      # i18n setup and language state
+    ├── Home.js                     # Language selector and translated heading
+    ├── App.test.js                 # Existing CRA starter test
+    ├── index.js                    # React entry point
+    └── locales/
+        ├── pt-br/
+        │   ├── messages.json
+        │   └── messages.js
+        ├── en/
+        │   ├── messages.json
+        │   └── messages.js
+        └── es/
+            ├── messages.json
+            └── messages.js
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 🚀 Getting Started
 
-## Learn More
+This repository uses an older React and tooling stack. Install a compatible Node.js environment before running it.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+git clone https://github.com/osnjunior91/lingui-js.git
+cd lingui-js
+npm install
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Then open [http://localhost:3000](http://localhost:3000), choose a language from the dropdown, and watch the heading change.
 
-### Code Splitting
+Available package scripts:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Command | Purpose |
+| --- | --- |
+| `npm start` | Start the development server |
+| `npm run build` | Build the React application |
+| `npm test` | Run the test runner |
+| `npm run extract` | Extract translatable messages with Lingui CLI |
+| `npm run compile` | Compile translation catalogs with Lingui CLI |
 
-### Analyzing the Bundle Size
+Both `package-lock.json` and `yarn.lock` are committed. Prefer one package manager consistently when reinstalling or updating dependencies.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Note:** The commands above are documented from `package.json`; they were not executed as part of this README update. The existing `App.test.js` is an unmodified Create React App starter test and is not a meaningful test of the current multilingual UI.
 
-### Making a Progressive Web App
+## 🎯 What This Demonstrates
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This repository is a practical example of how to:
 
-### Advanced Configuration
+- Integrate an internationalization library into an existing React component tree.
+- Separate translation resources from UI components.
+- Switch locales at runtime while keeping the application mounted.
+- Load locale-specific messages asynchronously.
+- Organize a simple translation extraction and compilation workflow.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+These techniques are useful when building multilingual frontend applications for users across different countries and regions.
 
-### Deployment
+## 🔎 Current Scope & Future Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The current implementation translates the main demonstration heading. Other interface strings—such as the dropdown label and language names—are written directly in Portuguese in `Home.js` and are not translated by Lingui. There is no persisted language preference, locale-aware date/number formatting, or end-to-end test coverage.
 
-### `yarn build` fails to minify
+Potential improvements include translating all UI labels, storing the selected language, adding tests for locale changes, improving loading/error handling around dynamic imports, and upgrading the older dependencies.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+**Maintainer:** [osnjunior91](https://github.com/osnjunior91)  
+**Purpose:** Frontend i18n/localization proof of concept using React and LinguiJS.  
+**Documentation note:** This README describes the source code as inspected; no new application features were added.
